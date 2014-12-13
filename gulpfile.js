@@ -1,13 +1,21 @@
 var gulp = require("gulp");
 var ts = require('gulp-typescript');
 var eventStream = require('event-stream');
+var del = require('del');
+
+gulp.task('clean:ts', function (cb) {
+  del([
+    '.app/definitions',
+    '.app/js'
+  ], cb);
+});
 
 var tsProject = ts.createProject({
   declarationFiles: true,
   noExternalResolve: true
 });
 
-gulp.task('scripts', function () {
+gulp.task('scripts', ['clean:ts'], function () {
   var tsResult = gulp.src([
     'app/types/**/*.ts',
     'app/ts/*.ts',
